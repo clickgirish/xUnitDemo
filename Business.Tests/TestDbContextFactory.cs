@@ -21,9 +21,9 @@ public static class TestDbContextFactory
     private static void SeedTestData(MangoProductAPIContext context)
     {
         // Check if the table already contains data to prevent seeding multiple times
-        if (!context.StaticParam.Any())
+        if (!context.StaticParams.Any())
         {
-            context.StaticParam.AddRange(
+            context.StaticParams.AddRange(
                 new StaticParam
                 {
                     Key = "Param1",
