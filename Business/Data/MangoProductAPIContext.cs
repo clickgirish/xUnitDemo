@@ -1,20 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Business.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Business.Entities;
 
 namespace Business.Data
 {
     public partial class MangoProductAPIContext : DbContext
     {
-        public MangoProductAPIContext()
+        private readonly Action<MangoProductAPIContext, ModelBuilder> modelCustomizer;
+
+         public MangoProductAPIContext()
         {
         }
 
         public MangoProductAPIContext(DbContextOptions<MangoProductAPIContext> options)
             : base(options)
         {
+        }
+
+        public MangoProductAPIContext(DbContextOptions<MangoProductAPIContext> options,
+            Action<MangoProductAPIContext, ModelBuilder> modelCustomizer)
+            : base(options)
+        {
+            this.modelCustomizer = modelCustomizer;
         }
 
         public virtual DbSet<Coupon> Coupons { get; set; } = null!;
@@ -25,8 +31,8 @@ namespace Business.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//                optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS;Initial Catalog=MangoProductAPI;Integrated Security=True;Trust Server Certificate=True");
+                //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                //                optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS;Initial Catalog=MangoProductAPI;Integrated Security=True;Trust Server Certificate=True");
             }
         }
 
@@ -52,6 +58,11 @@ namespace Business.Data
             });
 
             OnModelCreatingPartial(modelBuilder);
+
+            if (modelCustomizer != null)
+            {
+                modelCustomizer(this, modelBuilder);
+            }
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
