@@ -1,0 +1,1 @@
+Scaffold-DbContext "Data Source=.\SQLEXPRESS;Initial Catalog=MangoProductAPI;Integrated Security=True;Trust Server Certificate=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir "Entities" -ContextDir "Data" -Context "MangoProductAPIContext" -Force
