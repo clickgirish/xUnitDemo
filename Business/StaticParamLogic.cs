@@ -6,9 +6,15 @@ namespace Business
 {
     public class StaticParamLogic
     {
-        public StaticParam? GetParamById(string key)
+        private readonly MangoProductAPIContext context;
+
+        public StaticParamLogic(DbContextOptions<MangoProductAPIContext> options)
         {
-            MangoProductAPIContext context = new MangoProductAPIContext();
+            context = new MangoProductAPIContext(options);
+        }
+
+        public StaticParam? GetParamById(string key)
+        {            
             var staticParam = context.StaticParams.FirstOrDefault(p => p.Key == key);
 
             return staticParam;
